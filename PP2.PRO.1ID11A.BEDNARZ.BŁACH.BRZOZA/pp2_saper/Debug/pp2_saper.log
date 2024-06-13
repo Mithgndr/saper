@@ -1,7 +1,0 @@
-﻿  pp2_saper.c
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(176,12): warning C4013: niezdefiniowany "al_load_tff_font"; przy założeniu, że extern zwraca int
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(176,10): warning C4047: "=": "ALLEGRO_FONT *" różni się w poziomach operatorów pośrednich od "int"
-pp2_saper.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp__al_init_font_addon przywołany w funkcji _main
-pp2_saper.obj : error LNK2019: nierozpoznany symbol zewnętrzny __imp__al_init_ttf_addon przywołany w funkcji _main
-pp2_saper.obj : error LNK2019: nierozpoznany symbol zewnętrzny _al_load_tff_font przywołany w funkcji _main
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\Debug\pp2_saper.exe : fatal error LNK1120: liczba nierozpoznanych elementów zewnętrznych: 3
