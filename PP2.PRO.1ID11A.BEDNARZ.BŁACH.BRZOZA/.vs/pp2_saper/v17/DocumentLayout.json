@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\filip\\source\\repos\\po1\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\",
+  "WorkspaceRootPath": "C:\\Users\\filip\\OneDrive\\Dokumenty\\GitHub\\saper\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{970468D1-BF83-4140-86DC-14E01CFB88DB}|pp2_saper.vcxproj|C:\\Users\\filip\\source\\repos\\po1\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\pp2_saper.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{970468D1-BF83-4140-86DC-14E01CFB88DB}|pp2_saper.vcxproj|C:\\Users\\filip\\OneDrive\\Dokumenty\\GitHub\\saper\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\pp2_saper.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{970468D1-BF83-4140-86DC-14E01CFB88DB}|pp2_saper.vcxproj|solutionrelative:pp2_saper.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
@@ -24,9 +24,9 @@
               "DocumentIndex": 1,
               "Title": "stdio.h",
               "DocumentMoniker": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
               "ToolTip": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\stdio.h",
               "ViewState": "AQIAADwEAAAAAAAAAAAawEoEAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-06-13T20:48:46.384Z"
@@ -35,11 +35,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "pp2_saper.c",
-              "DocumentMoniker": "C:\\Users\\filip\\source\\repos\\po1\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\pp2_saper.c",
+              "DocumentMoniker": "C:\\Users\\filip\\OneDrive\\Dokumenty\\GitHub\\saper\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\pp2_saper.c",
               "RelativeDocumentMoniker": "pp2_saper.c",
-              "ToolTip": "C:\\Users\\filip\\source\\repos\\po1\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\pp2_saper.c",
+              "ToolTip": "C:\\Users\\filip\\OneDrive\\Dokumenty\\GitHub\\saper\\PP2.PRO.1ID11A.BEDNARZ.B\u0141ACH.BRZOZA\\pp2_saper.c",
               "RelativeToolTip": "pp2_saper.c",
-              "ViewState": "AQIAAD4CAAAAAAAAAAAawEwCAAAAAAAA",
+              "ViewState": "AQIAAOMCAAAAAAAAAAAAAEQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-04-09T14:20:40.841Z",
               "EditorCaption": ""

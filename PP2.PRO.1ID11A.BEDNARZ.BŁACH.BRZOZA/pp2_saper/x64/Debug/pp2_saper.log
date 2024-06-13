@@ -1,12 +1,12 @@
 ﻿  pp2_saper.c
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(268,24): warning C4477: „fscanf_s”: ciąg formatu „%d” wymaga argumentu typu „int *”, ale argument 3 ze zmienną liczbą argumentów ma typ „bool *”
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(268,24): warning C4477: „fscanf_s”: ciąg formatu „%d” wymaga argumentu typu „int *”, ale argument 4 ze zmienną liczbą argumentów ma typ „bool *”
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(268,24): warning C4477: „fscanf_s”: ciąg formatu „%d” wymaga argumentu typu „int *”, ale argument 5 ze zmienną liczbą argumentów ma typ „bool *”
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,55): warning C4047: "funkcja": "int *" różni się w poziomach operatorów pośrednich od "int"
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,55): warning C4024: "load_save": różne typy dla formalnego i rzeczywistego parametru 2
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,61): warning C4047: "funkcja": "int *" różni się w poziomach operatorów pośrednich od "int"
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,61): warning C4024: "load_save": różne typy dla formalnego i rzeczywistego parametru 3
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,67): warning C4047: "funkcja": "int *" różni się w poziomach operatorów pośrednich od "int"
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,67): warning C4024: "load_save": różne typy dla formalnego i rzeczywistego parametru 4
-C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(397,27): warning C4101: "Cell_List2": lokalna zmienna, do której nie istnieje odwołanie
-  pp2_saper.vcxproj -> C:\Users\filip\source\repos\po1\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\x64\Debug\pp2_saper.exe
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(268,24): warning C4477: „fscanf_s”: ciąg formatu „%d” wymaga argumentu typu „int *”, ale argument 3 ze zmienną liczbą argumentów ma typ „bool *”
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(268,24): warning C4477: „fscanf_s”: ciąg formatu „%d” wymaga argumentu typu „int *”, ale argument 4 ze zmienną liczbą argumentów ma typ „bool *”
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(268,24): warning C4477: „fscanf_s”: ciąg formatu „%d” wymaga argumentu typu „int *”, ale argument 5 ze zmienną liczbą argumentów ma typ „bool *”
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,55): warning C4047: "funkcja": "int *" różni się w poziomach operatorów pośrednich od "int"
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,55): warning C4024: "load_save": różne typy dla formalnego i rzeczywistego parametru 2
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,61): warning C4047: "funkcja": "int *" różni się w poziomach operatorów pośrednich od "int"
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,61): warning C4024: "load_save": różne typy dla formalnego i rzeczywistego parametru 3
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,67): warning C4047: "funkcja": "int *" różni się w poziomach operatorów pośrednich od "int"
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(538,67): warning C4024: "load_save": różne typy dla formalnego i rzeczywistego parametru 4
+C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\pp2_saper.c(397,27): warning C4101: "Cell_List2": lokalna zmienna, do której nie istnieje odwołanie
+  pp2_saper.vcxproj -> C:\Users\filip\OneDrive\Dokumenty\GitHub\saper\PP2.PRO.1ID11A.BEDNARZ.BŁACH.BRZOZA\x64\Debug\pp2_saper.exe
