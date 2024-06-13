@@ -17,9 +17,9 @@ typedef struct cell
 {
     int row;
     int col;
-    int is_mine;
-    int is_revealed;
-    int is_flag;
+    bool is_mine;
+    bool is_revealed;
+    bool is_flag;
     int value; 
 } cell;
 
@@ -81,13 +81,13 @@ void print_grid(cell_list* Cell_List, int rows, int cols, ALLEGRO_BITMAP* CELL, 
         for (int j = 0; j < cols; j++) 
         {
             int index = i * cols + j;
-            if (Cell_List->cells[index].is_flag == 1)
+            if (Cell_List->cells[index].is_flag == true)
             {
                 al_draw_bitmap(CELL_FLAG, j * 40, i * 40, 0);
             }
-            else if (Cell_List->cells[index].is_revealed == 1)
+            else if (Cell_List->cells[index].is_revealed == true)
             {
-                if (Cell_List->cells[index].is_mine == 1)
+                if (Cell_List->cells[index].is_mine == true)
                     al_draw_bitmap(CELL_MINE, j * 40, i * 40, 0);
                 else
                 {
@@ -139,9 +139,9 @@ void place_mines(cell_list* Cell_List, int rows, int cols, int mines)
         int row = rand() % rows;
         int col = rand() % cols;
         int index = row * cols + col;
-        if (Cell_List->cells[index].is_mine == 0)
+        if (Cell_List->cells[index].is_mine == false)
         {
-            Cell_List->cells[index].is_mine = 1;
+            Cell_List->cells[index].is_mine = true;
             mines_placed++;
         }
     }
@@ -188,7 +188,7 @@ void flood_reveal(cell_list* Cell_List, int rows, int cols, int row_input, int c
     int index = row_input * cols + col_input;
     if (Cell_List->cells[index].is_revealed || Cell_List->cells[index].is_mine || Cell_List->cells[index].is_flag)
         return;
-    Cell_List->cells[index].is_revealed = 1;
+    Cell_List->cells[index].is_revealed = true;
     if (Cell_List->cells[index].value == 0)
     {
         for (int i = -1; i <= 1; i++)
@@ -207,6 +207,71 @@ bool isMouseHover(int x, int y, int width, int hight, float mouse_x, float mouse
     return (mouse_x > x && mouse_x < x + width && mouse_y > y && mouse_y < y + hight);
 }
 
+
+//Funkcja sparwdzająca, czy wszystkie pola poza minami są odkryte
+bool is_everything_revealed(cell_list* Cell_List, int rows, int cols)
+{
+    for (int i = 0; i < rows * cols; i++)
+    {
+        if (Cell_List->cells[i].is_mine == false)
+        {
+            if (Cell_List->cells[i].is_revealed == false)
+                return false;
+        }
+    }
+    return true;
+}
+
+//Funkcja zapisująca obecny stan gry do pliku
+void save_game(cell_list *Cell_List, int rows, int cols, int mines)
+{
+    FILE* save = fopen("gamesave.txt", "w+");
+    if (!save)
+    {
+        fprintf(stderr, "Error opening save file\n");
+        return;
+    }
+
+    fprintf(save, "%d %d %d\n", rows, cols, mines);
+    for (int i = 0; i < rows * cols; i++)
+    {
+        fprintf(save, "%d %d %d %d %d %d\n", Cell_List->cells->row, Cell_List->cells->col, Cell_List->cells->is_mine, Cell_List->cells->is_revealed, Cell_List->cells->is_flag, Cell_List->cells->value);
+    }
+
+    fclose(save);
+}
+
+//Funkcja oczytująca zapisany stan gry
+bool load_save(cell_list* Cell_List, int* rows, int* cols, int* mines)
+{
+    FILE* save = fopen("gamesave.txt", "r");
+    if (!save)
+    {
+        fprintf(stderr, "Error opening save file\n");
+        return false;
+    }
+
+    fscanf_s(save, "%d %d %d", rows, cols, mines);
+
+    Cell_List->size = (*rows) * (*cols);
+
+    Cell_List->cells = malloc(Cell_List->size * sizeof(cell));
+
+    if (Cell_List->cells == NULL)
+    {
+        fprintf(stderr, "Memory allocation failed!\n");
+        fclose(save);
+        return false;
+    }
+    for (int i = 0; i < Cell_List->size; ++i)
+    {
+        fscanf_s(save, "%d %d %d %d %d %d", &Cell_List->cells[i].row, &Cell_List->cells[i].col, &Cell_List->cells[i].is_mine, &Cell_List->cells[i].is_revealed, &Cell_List->cells[i].is_flag, &Cell_List->cells[i].value);
+    }
+
+    fclose(save);
+    return true;
+}
+
 int main()
 {
     //Inicjalizacja biblioteki Allegro i jej dodatków
@@ -223,7 +288,6 @@ int main()
 
     //Stworzenie okna, automatycznego odświerzania, kolejki zdarzeń i struktury przechowującej dane o myszy
     ALLEGRO_DISPLAY* display = NULL;
-    ALLEGRO_TIMER* Framerate = al_create_timer(1.0 / 60);
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_MOUSE_STATE mouse_state;
 
@@ -249,18 +313,15 @@ int main()
         fprintf(stderr, "Failed to load font!\n");
     }
 
-    //Uruchomienie automatycznego odświerzania ekranu
-    al_start_timer(Framerate);
 
-    //Utowrzenie kolejki zdarzeń, w której rejestrowane są zmiany myszy, klawiatury, okna i odświerzania ekranu
+    //Utowrzenie kolejki zdarzeń, w której rejestrowane są zmiany myszy, klawiatury i okna
     queue = al_create_event_queue();
     al_register_event_source(queue, al_get_mouse_event_source());
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(display));
-    al_register_event_source(queue, al_get_timer_event_source(Framerate));
 
     //Zmienne zawierające dane o wielkości pola gry
-    int rows, cols, mines;
+    int rows = 0, cols = 0, mines = 0;
 
     //Załadowanie tekstur gry
     ALLEGRO_BITMAP* CELL = al_load_bitmap("CELL.jpg");
@@ -332,6 +393,8 @@ int main()
             {
                 bool game_running = true;
                 bool difficultySelected = false;
+                bool loaded_save = false;
+                cell_list Cell_List2;
                 while (game_running == true)
                 {
                     al_wait_for_event(queue, &event);
@@ -348,7 +411,8 @@ int main()
                     if (event.type == ALLEGRO_EVENT_MOUSE_AXES)
                     {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
-                        al_draw_text(font3, al_map_rgb(255, 255, 255), 640, 300, ALLEGRO_ALIGN_CENTER, "Select difficulty:");
+                        al_draw_text(font3, al_map_rgb(255, 255, 255), 640, 300, ALLEGRO_ALIGN_CENTER, "Load or select difficulty:");
+                        al_draw_text(font2, al_map_rgb(255, 255, 255), 640, 350, ALLEGRO_ALIGN_CENTER, "Load");
                         al_draw_text(font2, al_map_rgb(255, 255, 255), 640, 400, ALLEGRO_ALIGN_CENTER, "Easy");
                         al_draw_text(font2, al_map_rgb(255, 255, 255), 640, 450, ALLEGRO_ALIGN_CENTER, "Medium");
                         al_draw_text(font2, al_map_rgb(255, 255, 255), 640, 500, ALLEGRO_ALIGN_CENTER, "Hard");
@@ -356,6 +420,12 @@ int main()
                     }
 
                     //Ekran wyboru poziomu trudności - zmiana koloru przycisku
+                    if (event.type == ALLEGRO_EVENT_MOUSE_AXES)
+                        if (isMouseHover(600, 350, 80, 40, event.mouse.x, event.mouse.y))
+                        {
+                            al_draw_text(font2, al_map_rgb(100, 100, 100), 640, 350, ALLEGRO_ALIGN_CENTER, "Load");
+                            al_flip_display();
+                        }
                     if (event.type == ALLEGRO_EVENT_MOUSE_AXES)
                     {
                         if (isMouseHover(590, 400, 100, 40, event.mouse.x, event.mouse.y))
@@ -391,12 +461,12 @@ int main()
                             if (isMouseHover(600, 400, 80, 40, event.mouse.x, event.mouse.y))
                             {
                                 //Sprawdzenie mechanik gry - przegrana i wygrana
-                                rows = 4;
-                                cols = 4;
-                                mines = 1;
-                                //rows = 8;
-                                //cols = 8;
-                                //mines = 10;
+                                //rows = 4;
+                                //cols = 4;
+                                //mines = 1;
+                                rows = 8;
+                                cols = 8;
+                                mines = 10;
                                 difficultySelected = true;
                             }
                         }
@@ -422,6 +492,15 @@ int main()
                                 difficultySelected = true;
                             }
                         }
+                        if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+                        {
+                            al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+                            if (isMouseHover(600, 350, 80, 40, event.mouse.x, event.mouse.y))
+                            {
+                                loaded_save = true;
+                                difficultySelected = true;
+                            }
+                        }
 
                         //Uruchomienie właściwej części gry
                         if (difficultySelected == true)
@@ -431,24 +510,34 @@ int main()
                             //Dostosowanie rozmiaru okna do wielkości planszy
                             al_resize_display(display, cols * 40, rows * 40);
 
-                            //Utworzenie listy komórek
-                            cell_list Cell_List = initialize_cell_list(rows * cols);
+                            cell_list Cell_List;
 
-                            for (int i = 0; i < rows; i++)
+                            if (loaded_save == false)
                             {
-                                for (int j = 0; j < cols; j++)
+                                //Utworzenie listy komórek
+                                Cell_List = initialize_cell_list(rows * cols);
+
+                                for (int i = 0; i < rows; i++)
                                 {
-                                    Cell_List.cells[i * cols + j] = *initialize_cell(i, j, 0, 0, 0, 0);
+                                    for (int j = 0; j < cols; j++)
+                                    {
+                                        Cell_List.cells[i * cols + j] = *initialize_cell(i, j, 0, 0, 0, 0);
+                                    }
                                 }
+
+                                //Losowe umiejscownienie min na polu gry
+                                place_mines(&Cell_List, rows, cols, mines);
+
+                                //Zliczenie min znajdujących się w pobliżu każdej z komórek
+                                count_value(&Cell_List, rows, cols);
                             }
 
-                            //Losowe umiejscownienie min na polu gry
-                            place_mines(&Cell_List, rows, cols, mines);
+                            //Załadowanie poprzedniego stanu gry
+                            if (loaded_save == true)
+                            {
+                                load_save(&Cell_List, rows, cols, mines);
+                            }
 
-                            //Zliczenie min znajdujących się w pobliżu każdej z komórek
-                            count_value(&Cell_List, rows, cols);
-
-                            int not_flagged_mines = mines;  //Zmienna przechowująca ilość min, które nie zostały oflagowane
                             bool gameplay = true;
                             while (gameplay != false)
                             {
@@ -458,6 +547,16 @@ int main()
                                 print_grid(&Cell_List, rows, cols, CELL, CELL_REVEALED, CELL_MINE, CELL_VALUE_1, CELL_VALUE_2, CELL_VALUE_3, CELL_VALUE_4, CELL_VALUE_5, CELL_VALUE_6, CELL_VALUE_7, CELL_VALUE_8, CELL_FLAG);
                                 al_flip_display();
 
+                                //Zapisz stan gry
+                                if (event.type == ALLEGRO_EVENT_KEY_UP && event.keyboard.keycode == ALLEGRO_KEY_S)
+                                {
+                                    save_game(&Cell_List, rows, cols, mines);
+                                    al_draw_text(font3, al_map_rgb(0, 255, 0), al_get_display_width(display), al_get_display_height(display), ALLEGRO_ALIGN_CENTER, "Game Saved!");
+                                    al_flip_display();
+                                    al_rest(5);
+                                    gameplay = false;
+                                }
+
                                 //Odkrywanie pól
                                 if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
                                 {
@@ -466,7 +565,7 @@ int main()
                                     int index = row_index * cols + col_index;
 
                                     //Odkrycie pola nie będącego miną
-                                    if (Cell_List.cells[index].is_revealed == 0 && Cell_List.cells[index].is_flag == 0)
+                                    if (Cell_List.cells[index].is_revealed == false && Cell_List.cells[index].is_flag == false)
                                     {
                                         flood_reveal(&Cell_List, rows, cols, row_index, col_index);
                                         print_grid(&Cell_List, rows, cols, CELL, CELL_REVEALED, CELL_MINE, CELL_VALUE_1, CELL_VALUE_2, CELL_VALUE_3, CELL_VALUE_4, CELL_VALUE_5, CELL_VALUE_6, CELL_VALUE_7, CELL_VALUE_8, CELL_FLAG);
@@ -475,13 +574,13 @@ int main()
                                     }
 
                                     //Odkrycie pola będącego miną i ekran końca gry - przegranej
-                                    if (Cell_List.cells[index].is_mine == 1 && Cell_List.cells[index].is_revealed == 0 && Cell_List.cells[index].is_flag == 0)
+                                    if (Cell_List.cells[index].is_mine == true && Cell_List.cells[index].is_revealed == false && Cell_List.cells[index].is_flag == false)
                                     {
                                         //Odkrycie całej planszy
                                         for (int i = 0; i <= rows * cols; i++)
                                         {
-                                            Cell_List.cells[i].is_flag = 0;
-                                            Cell_List.cells[i].is_revealed = 1;
+                                            Cell_List.cells[i].is_flag = false;
+                                            Cell_List.cells[i].is_revealed = true;
                                         }
                                         al_wait_for_event(queue, &event);
                                         al_play_sample(explosion, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
@@ -518,32 +617,32 @@ int main()
                                     int row_index = mouse_y / 40;
                                     int index = row_index * cols + col_index;
 
-                                    if (Cell_List.cells[index].is_revealed == 0)
+                                    if (Cell_List.cells[index].is_revealed == false)
                                     {
                                         //Flagowanie i odflagowanie pola z miną
-                                        if (Cell_List.cells[index].is_mine == 1)
+                                        if (Cell_List.cells[index].is_mine == true)
                                         {
-                                            if (Cell_List.cells[index].is_flag == 0)
+                                            if (Cell_List.cells[index].is_flag == false)
                                             {
-                                                Cell_List.cells[index].is_flag = 1;
-                                                not_flagged_mines--;
+                                                Cell_List.cells[index].is_flag = true;
+                                                mines--;
                                             }
-                                            else if (Cell_List.cells[index].is_flag == 1)
+                                            else if (Cell_List.cells[index].is_flag == true)
                                             {
-                                                Cell_List.cells[index].is_flag = 0;
-                                                not_flagged_mines++;
+                                                Cell_List.cells[index].is_flag = false;
+                                                mines++;
                                             }
                                         }
                                         //Flagowanie i odflagowanie pola bez miny
-                                        if (Cell_List.cells[index].is_mine == 0)
+                                        if (Cell_List.cells[index].is_mine == false)
                                         {
-                                            if (Cell_List.cells[index].is_flag == 0)
+                                            if (Cell_List.cells[index].is_flag == false)
                                             {
-                                                Cell_List.cells[index].is_flag = 1;
+                                                Cell_List.cells[index].is_flag = true;
                                             }
-                                            else if (Cell_List.cells[index].is_flag == 1)
+                                            else if (Cell_List.cells[index].is_flag == true)
                                             {
-                                                Cell_List.cells[index].is_flag = 0;
+                                                Cell_List.cells[index].is_flag = false ;
                                             }
                                         }
                                     }
@@ -554,7 +653,8 @@ int main()
 
                                 //Ekran końca gry - wygrana
                                 //Wszystkie miny muszą być oflagowane i każde pozostałe pole musi być odkryte
-                                if (not_flagged_mines == 0 && (Cell_List.cells->is_mine == 0 && Cell_List.cells->is_revealed == 1))
+                                bool revealed = is_everything_revealed(&Cell_List, rows, cols);
+                                if (mines == 0 && revealed == true)
                                 {
                                     al_draw_text(font3, al_map_rgb(0, 255, 0), al_get_display_width(display) / 2, al_get_display_height(display) / 2, ALLEGRO_ALIGN_CENTRE, "YOU WIN");
                                     al_draw_text(font1, al_map_rgb(0, 255, 0), al_get_display_width(display) / 2, 4 * al_get_display_height(display) / 5, ALLEGRO_ALIGN_CENTER, "Click mouse to continue");
@@ -646,7 +746,6 @@ int main()
         al_destroy_font(font2);
         al_destroy_font(font3);
         al_destroy_display(display);
-        al_destroy_timer(Framerate);
         al_destroy_bitmap(CELL);
         al_destroy_bitmap(CELL_FLAG);
         al_destroy_bitmap(CELL_MINE);
